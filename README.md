@@ -22,3 +22,7 @@ So use it at your own risk and be aware that you're playing around with your BIO
     make
 
     su -c ./yoga-bios-unlock
+
+### Dry-run
+
+    ./yoga-bios-unlock --dry-run

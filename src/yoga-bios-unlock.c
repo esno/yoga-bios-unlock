@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -85,9 +86,15 @@ int read_sysfs(const char *file, char *buffer, int n) {
 
 int main(int argc, const char **argv) {
   char ack;
+  uint8_t dryrun = 0;
+
+  if (argc == 2 && strcmp(argv[1], "--dry-run") == 0) {
+    fprintf(stdout, "Enabled dry-run\n");
+    dryrun = 1;
+  }
 
   if (is_yoga() < 0) {
-    fprintf(stderr, "wrong device, aborting!\n");
+    fprintf(stderr, "Wrong device, aborting!\n");
     return EXIT_FAILURE;
   }
 
@@ -114,8 +121,13 @@ int main(int argc, const char **argv) {
     return EXIT_FAILURE;
   }
 
-  outb_p(0xf7, 0x72);
-  outb_p(0x77, 0x73);
+  if (dryrun == 1) {
+    fprintf(stdout, "Port 0x72 is 0x%02x and would be set to 0xf7\n", inb_p(0x72));
+    fprintf(stdout, "Port 0x73 is 0x%02x and would be set to 0x77\n", inb_p(0x73));
+  } else {
+    outb_p(0xf7, 0x72);
+    outb_p(0x77, 0x73);
+  }
 
   return EXIT_SUCCESS;
 }
