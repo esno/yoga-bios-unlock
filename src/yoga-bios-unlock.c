@@ -20,43 +20,63 @@
 
 #define __CHASSIS_VERSION "Yoga Slim 7 14ARE05"
 
-int check_dmi(const char *file, const char *value);
+typedef struct dmi_strings dmi_strings_t;
+struct dmi_strings {
+  const char *string;
+  dmi_strings_t *next;
+};
+
+int check_dmi(const char *file, dmi_strings_t *dmi);
 int is_yoga(void);
 int read_sysfs(const char *file, char *buffer, int n);
 
-int check_dmi(const char *file, const char *value) {
+int check_dmi(const char *file, dmi_strings_t *dmi) {
   int l = 128;
   char buffer[l];
+  dmi_strings_t *ptr = dmi;
+  int rc = 0;
 
   memset(buffer, 0, 128);
   if (read_sysfs(file, buffer, l) < 0) {
     fprintf(stderr, "cannot read /sys/class/dmi/id/%s\n", file);
     return -1;
   }
-    
-  if (strcmp(value, buffer) != 0) {
-    fprintf(stderr, "%s does not match (expected: %s / got: %s)\n", file, value, buffer);
-    return -1;
+
+  while (ptr != NULL) {
+    if (strcmp(ptr->string, buffer) != 0)
+      rc = -2;
+
+    ptr = ptr->next;
   }
 
-  return 0;
+  if (rc < 0)
+    fprintf(stderr, "%s does not match (%s)\n", file, buffer);
+
+  return rc;
 }
 
 int is_yoga(void) {
   int rc = 0;
 
-  if (check_dmi("bios_vendor", __BIOS_VENDOR) < 0)
+  dmi_strings_t bios_vendor = { .string = __BIOS_VENDOR, .next = NULL };
+  dmi_strings_t bios_version_34 = { .string = __BIOS_VERSION_34, .next = NULL };
+  dmi_strings_t bios_version_32 = { .string = __BIOS_VERSION_32, .next = &bios_version_34 };
+  dmi_strings_t board_name = { .string = __BOARD_NAME, .next = NULL };
+  dmi_strings_t board_vendor = { .string = __BOARD_VENDOR, .next = NULL };
+  dmi_strings_t board_version = { .string = __BOARD_VERSION, .next = NULL };
+  dmi_strings_t chassis_version = { .string = __CHASSIS_VERSION, .next = NULL };
+
+  if (check_dmi("bios_vendor", &bios_vendor) < 0)
     rc = -1;
-  if (check_dmi("bios_version", __BIOS_VERSION_32) < 0 &&
-      check_dmi("bios_version", __BIOS_VERSION_34) < 0)
+  if (check_dmi("bios_version", &bios_version_32) < 0)
     rc = -2;
-  if (check_dmi("board_name", __BOARD_NAME) < 0)
+  if (check_dmi("board_name", &board_name) < 0)
     rc = -3;
-  if (check_dmi("board_vendor", __BOARD_VENDOR) < 0)
+  if (check_dmi("board_vendor", &board_vendor) < 0)
     rc = -4;
-  if (check_dmi("board_version", __BOARD_VERSION) < 0)
+  if (check_dmi("board_version", &board_version) < 0)
     rc = -5;
-  if (check_dmi("chassis_version", __CHASSIS_VERSION) < 0)
+  if (check_dmi("chassis_version", &chassis_version) < 0)
     rc = -6;
 
   return rc;
