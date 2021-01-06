@@ -11,7 +11,8 @@
 #define __DMI_PATH "/sys/class/dmi/id"
 
 #define __BIOS_VENDOR "LENOVO"
-#define __BIOS_VERSION "DMCN32WW"
+#define __BIOS_VERSION_32 "DMCN32WW"
+#define __BIOS_VERSION_34 "DMCN34WW"
 
 #define __BOARD_NAME "LNVNB161216"
 #define __BOARD_VENDOR "LENOVO"
@@ -46,7 +47,8 @@ int is_yoga(void) {
 
   if (check_dmi("bios_vendor", __BIOS_VENDOR) < 0)
     rc = -1;
-  if (check_dmi("bios_version", __BIOS_VERSION) < 0)
+  if (check_dmi("bios_version", __BIOS_VERSION_32) < 0 &&
+      check_dmi("bios_version", __BIOS_VERSION_34) < 0)
     rc = -2;
   if (check_dmi("board_name", __BOARD_NAME) < 0)
     rc = -3;
