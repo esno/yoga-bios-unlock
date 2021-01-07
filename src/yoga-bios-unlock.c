@@ -38,7 +38,7 @@ int check_dmi(const char *file, dmi_strings_t *dmi) {
 
   memset(buffer, 0, 128);
   if (read_sysfs(file, buffer, l) < 0) {
-    fprintf(stderr, "cannot read /sys/class/dmi/id/%s\n", file);
+    fprintf(stderr, "cannot read %s/%s\n", __DMI_PATH, file);
     return -1;
   }
 
