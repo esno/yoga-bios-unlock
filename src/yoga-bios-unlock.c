@@ -16,7 +16,7 @@
 
 #define __BOARD_NAME "LNVNB161216"
 #define __BOARD_VENDOR "LENOVO"
-#define __BOARD_VERSION "SDK0J40709 WIN"
+#define __BOARD_VERSION "SDK0J40709 WIN  "
 
 #define __CHASSIS_VERSION "Yoga Slim 7 14ARE05"
 
@@ -34,7 +34,7 @@ int check_dmi(const char *file, dmi_strings_t *dmi) {
   int l = 128;
   char buffer[l];
   dmi_strings_t *ptr = dmi;
-  int rc = 0;
+  int rc = -2;
 
   memset(buffer, 0, 128);
   if (read_sysfs(file, buffer, l) < 0) {
@@ -43,16 +43,20 @@ int check_dmi(const char *file, dmi_strings_t *dmi) {
   }
 
   while (ptr != NULL) {
-    if (strcmp(ptr->string, buffer) != 0)
-      rc = -2;
+    if (strcmp(ptr->string, buffer) == 0) {
+      rc = 0;
+      break;
+    }
 
     ptr = ptr->next;
   }
 
-  if (rc < 0)
+  if (rc < 0) {
     fprintf(stderr, "%s does not match (%s)\n", file, buffer);
+    return rc;
+  }
 
-  return rc;
+  return 0;
 }
 
 int is_yoga(void) {
