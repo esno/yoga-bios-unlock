@@ -113,6 +113,7 @@ int read_sysfs(const char *file, char *buffer, int n) {
 int main(int argc, const char **argv) {
   char ack;
   uint8_t dryrun = 0;
+  unsigned char p0x72;
 
   if (argc == 2 && strcmp(argv[1], "--dry-run") == 0) {
     fprintf(stdout, "Enabled dry-run\n");
@@ -148,8 +149,12 @@ int main(int argc, const char **argv) {
   }
 
   if (dryrun == 1) {
-    fprintf(stdout, "Port 0x72 is 0x%02x and would be set to 0xf7\n", inb_p(0x72));
+    p0x72 = inb_p(0x72);
+    fprintf(stdout, "Port 0x72 is 0x%02x and will be set to 0xf7\n", p0x72);
+    outb_p(0xf7, 0x72);
     fprintf(stdout, "Port 0x73 is 0x%02x and would be set to 0x77\n", inb_p(0x73));
+    fprintf(stdout, "Port 0x72 is 0xf7 and will be set to original value 0x%02x\n", p0x72);
+    outb_p(p0x72, 0x72);
   } else {
     outb_p(0xf7, 0x72);
     outb_p(0x77, 0x73);
