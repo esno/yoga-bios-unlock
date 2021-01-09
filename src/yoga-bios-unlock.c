@@ -112,12 +112,19 @@ int read_sysfs(const char *file, char *buffer, int n) {
 
 int main(int argc, const char **argv) {
   char ack;
-  uint8_t dryrun = 0;
+  uint8_t readmode = 0;
   unsigned char p0x72;
 
   if (argc == 2 && strcmp(argv[1], "--dry-run") == 0) {
-    fprintf(stdout, "Enabled dry-run\n");
-    dryrun = 1;
+    fprintf(stderr, "Dry-run is deprecated! Use `--read|-r` instead\n");
+    return EXIT_FAILURE;
+  }
+
+  if (argc == 2 && (strcmp(argv[1], "--read") == 0 ||
+      strcmp(argv[1], "-r") == 0)) {
+    fprintf(stdout, "Run in read-mode\n");
+    fprintf(stdout, "Be aware that readmode temporarily changes value of port 0x72 to index 0xf7\n");
+    readmode = 1;
   }
 
   if (is_yoga() < 0) {
@@ -148,7 +155,7 @@ int main(int argc, const char **argv) {
     return EXIT_FAILURE;
   }
 
-  if (dryrun == 1) {
+  if (readmode == 1) {
     p0x72 = inb_p(0x72);
     fprintf(stdout, "Port 0x72 is 0x%02x and will be set to 0xf7\n", p0x72);
     outb_p(0xf7, 0x72);
