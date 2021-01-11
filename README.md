@@ -39,6 +39,9 @@ So use it at your own risk and be aware that you're playing around with your BIO
 
 ## Usage
 
+> BIOS version `DMCN34WW` is supported but hides some menus.
+> Using `DMCN32WW` is recommended.
+
     git clone https://github.com/esno/yoga-bios-unlock.git
     cd ./yoga-bios-unlock
     make
