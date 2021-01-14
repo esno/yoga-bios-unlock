@@ -28,10 +28,10 @@ struct dmi_strings {
 
 int check_dmi(const char *file, dmi_strings_t *dmi);
 int is_yoga(void);
-int read_sysfs(const char *file, char *buffer, int n);
+int read_sysfs(const char *file, char *buffer, size_t n);
 
 int check_dmi(const char *file, dmi_strings_t *dmi) {
-  int l = 128;
+  size_t l = 128;
   char buffer[l];
   dmi_strings_t *ptr = dmi;
   int rc = -2;
@@ -86,11 +86,11 @@ int is_yoga(void) {
   return rc;
 }
 
-int read_sysfs(const char *file, char *buffer, int n) {
-  int l = strlen(__DMI_PATH) + strlen(file) + 2;
+int read_sysfs(const char *file, char *buffer, size_t n) {
+  size_t l = strlen(__DMI_PATH) + strlen(file) + 2;
   char filename[l];
   FILE *fd;
-  int c;
+  size_t c;
 
   memset(filename, 0, l);
   snprintf(filename, l, "%s/%s", __DMI_PATH, file);
@@ -98,7 +98,7 @@ int read_sysfs(const char *file, char *buffer, int n) {
   if (fd == NULL)
     return -1;
 
-  if ((c = fread(buffer, 1, n, fd)) < 0) {
+  if ((c = fread(buffer, 1, n, fd)) != n) {
     if (feof(fd) == 0) {
       fclose(fd);
       return -2;
