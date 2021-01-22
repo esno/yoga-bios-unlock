@@ -34,7 +34,6 @@ int check_dmi(const char *file, dmi_strings_t *dmi) {
   size_t l = 128;
   char buffer[l];
   dmi_strings_t *ptr = dmi;
-  int rc = -2;
 
   memset(buffer, 0, 128);
   if (read_sysfs(file, buffer, l) < 0) {
@@ -44,19 +43,14 @@ int check_dmi(const char *file, dmi_strings_t *dmi) {
 
   while (ptr != NULL) {
     if (strcmp(ptr->string, buffer) == 0) {
-      rc = 0;
-      break;
+      return 0;
     }
 
     ptr = ptr->next;
   }
 
-  if (rc < 0) {
-    fprintf(stderr, "%s does not match (%s)\n", file, buffer);
-    return rc;
-  }
-
-  return 0;
+  fprintf(stderr, "%s does not match (%s)\n", file, buffer);
+  return -2;
 }
 
 int is_yoga(void) {
