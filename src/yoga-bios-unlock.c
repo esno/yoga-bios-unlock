@@ -133,7 +133,11 @@ int main(int argc, const char **argv) {
 
   fprintf(stdout, "WARNING: use at your own risk!\n");
   fprintf(stdout, "Agree? (y/Y) ");
-  scanf("%1s", &ack);
+  if (scanf("%1s", &ack) != 1) {
+    fprintf(stderr, "Can't read from stdin\n");
+    return EXIT_FAILURE;
+  }
+
   if (ack != 'y' && ack != 'Y') {
     fprintf(stdout, "nothing to do here\n");
     return EXIT_SUCCESS;
