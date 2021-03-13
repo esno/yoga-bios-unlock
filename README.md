@@ -55,4 +55,12 @@ So use it at your own risk and be aware that you're playing around with your BIO
 
     # ./yoga-bios-unlock          
     WARNING: use at your own risk!
-    Agree? (y/Y) y
+    Agree? (y/n) y
+
+## Compatibility
+
+    | Version  | Tested by me | Tested by others |
+    | -------- | ------------ | ---------------- |
+    | DMCN27WW |              | x                |
+    | DMCN32WW | x            | x                |
+    | DMCN34WW | x            | x                |

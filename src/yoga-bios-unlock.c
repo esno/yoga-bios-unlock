@@ -11,6 +11,7 @@
 #define __DMI_PATH "/sys/class/dmi/id"
 
 #define __BIOS_VENDOR "LENOVO"
+#define __BIOS_VERSION_27 "DMCN27WW"
 #define __BIOS_VERSION_32 "DMCN32WW"
 #define __BIOS_VERSION_34 "DMCN34WW"
 
@@ -59,6 +60,7 @@ int is_yoga(void) {
   dmi_strings_t bios_vendor = { .string = __BIOS_VENDOR, .next = NULL };
   dmi_strings_t bios_version_34 = { .string = __BIOS_VERSION_34, .next = NULL };
   dmi_strings_t bios_version_32 = { .string = __BIOS_VERSION_32, .next = &bios_version_34 };
+  dmi_strings_t bios_version_27 = { .string = __BIOS_VERSION_27, .next = &bios_version_32 };
   dmi_strings_t board_name = { .string = __BOARD_NAME, .next = NULL };
   dmi_strings_t board_vendor = { .string = __BOARD_VENDOR, .next = NULL };
   dmi_strings_t board_version = { .string = __BOARD_VERSION, .next = NULL };
@@ -66,7 +68,7 @@ int is_yoga(void) {
 
   if (check_dmi("bios_vendor", &bios_vendor) < 0)
     rc = -1;
-  if (check_dmi("bios_version", &bios_version_32) < 0)
+  if (check_dmi("bios_version", &bios_version_27) < 0)
     rc = -2;
   if (check_dmi("board_name", &board_name) < 0)
     rc = -3;
@@ -132,7 +134,7 @@ int main(int argc, const char **argv) {
   }
 
   fprintf(stdout, "WARNING: use at your own risk!\n");
-  fprintf(stdout, "Agree? (y/Y) ");
+  fprintf(stdout, "Agree? (y/n) ");
   if (scanf("%1s", &ack) != 1) {
     fprintf(stderr, "Can't read from stdin\n");
     return EXIT_FAILURE;
