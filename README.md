@@ -67,6 +67,10 @@ So use it at your own risk and be aware that you're playing around with your BIO
     Agree? (y/n) y
     Port 0x72 is 0xf4 and will be set to 0xf7
 
+If you hit the following issue please disable secure boot first and try again:
+
+    Can't set I/O privilege level (Operation not permitted)
+
 ## Compatibility
 
     | Version  | Tested by me | Tested by others |

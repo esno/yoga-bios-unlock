@@ -172,6 +172,7 @@ int main(int argc, const char **argv) {
 
   if (iopl(3) < 0) {
     fprintf(stderr, "Can't set I/O privilege level (%s)\n", strerror(errno));
+    fprintf(stderr, "Please try again after disable secure boot temporarily!\n");
     return EXIT_FAILURE;
   }
 
