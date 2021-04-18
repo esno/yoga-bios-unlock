@@ -78,3 +78,4 @@ If you hit the following issue please disable secure boot first and try again:
     | DMCN27WW |              | x                |
     | DMCN32WW | x            | x                |
     | DMCN34WW | x            | x                |
+    | DMCN38WW |              | x                |
