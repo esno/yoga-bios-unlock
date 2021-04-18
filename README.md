@@ -61,7 +61,7 @@ So use it at your own risk and be aware that you're playing around with your BIO
     Port 0x72 is 0xf4 and will be set to 0xf7
 
 
-    # ./yoga-bios-unlock --unlock
+    # ./yoga-bios-unlock --lock
     Run in lock mode
     WARNING: use at your own risk!
     Agree? (y/n) y
