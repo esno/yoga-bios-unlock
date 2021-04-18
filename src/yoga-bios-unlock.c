@@ -82,6 +82,16 @@ int is_yoga(void) {
   return rc;
 }
 
+void lock_bios(void) {
+  outb_p(0xf7, 0x72);
+  outb_p(0x00, 0x73);
+}
+
+void read_pin(void) {
+  outb_p(0xf7, 0x72);
+  fprintf(stdout, "Port 0x73 is 0x%02x and would be set to 0x77\n", inb_p(0x73));
+}
+
 int read_sysfs(const char *file, char *buffer, size_t n) {
   size_t l = strlen(__DMI_PATH) + strlen(file) + 2;
   char filename[l];
@@ -106,21 +116,36 @@ int read_sysfs(const char *file, char *buffer, size_t n) {
   return 0;
 }
 
+void unlock_bios(void) {
+  outb_p(0xf7, 0x72);
+  outb_p(0x77, 0x73);
+}
+
 int main(int argc, const char **argv) {
   char ack;
-  uint8_t readmode = 0;
+  // 0 = reserved, 1 = read, 2 = unlock, 3 = lock
+  uint8_t mode = 0;
   unsigned char p0x72;
 
-  if (argc == 2 && strcmp(argv[1], "--dry-run") == 0) {
-    fprintf(stderr, "Dry-run is deprecated! Use `--read|-r` instead\n");
+  if (argc != 2) {
+    fprintf(stdout, "USAGE: %s [-r|--read] [-u|--unlock] [-l|--lock]\n", argv[0]);
     return EXIT_FAILURE;
   }
 
-  if (argc == 2 && (strcmp(argv[1], "--read") == 0 ||
-      strcmp(argv[1], "-r") == 0)) {
-    fprintf(stdout, "Run in read-mode\n");
+  if ((strcmp(argv[1], "--read") == 0 || strcmp(argv[1], "-r") == 0)) {
+    fprintf(stdout, "Run in read mode\n");
     fprintf(stdout, "Be aware that readmode temporarily changes value of port 0x72 to index 0xf7\n");
-    readmode = 1;
+    mode = 1;
+  }
+
+  if ((strcmp(argv[1], "--unlock") == 0 || strcmp(argv[1], "-u") == 0)) {
+    fprintf(stdout, "Run in unlock mode\n");
+    mode = 2;
+  }
+
+  if ((strcmp(argv[1], "--lock") == 0 || strcmp(argv[1], "-l") == 0)) {
+    fprintf(stdout, "Run in lock mode\n");
+    mode = 3;
   }
 
   if (is_yoga() < 0) {
@@ -155,17 +180,22 @@ int main(int argc, const char **argv) {
     return EXIT_FAILURE;
   }
 
-  if (readmode == 1) {
-    p0x72 = inb_p(0x72);
-    fprintf(stdout, "Port 0x72 is 0x%02x and will be set to 0xf7\n", p0x72);
-    outb_p(0xf7, 0x72);
-    fprintf(stdout, "Port 0x73 is 0x%02x and would be set to 0x77\n", inb_p(0x73));
-    fprintf(stdout, "Port 0x72 is 0xf7 and will be set to original value 0x%02x\n", p0x72);
-    outb_p(p0x72, 0x72);
-  } else {
-    outb_p(0xf7, 0x72);
-    outb_p(0x77, 0x73);
+  p0x72 = inb_p(0x72);
+  fprintf(stdout, "Port 0x72 is 0x%02x and will be set to 0xf7\n", p0x72);
+
+  switch (mode) {
+    case 1:
+      read_pin();
+      break;
+    case 2:
+      unlock_bios();
+      break;
+    case 3:
+      lock_bios();
+      break;
   }
+
+  outb_p(p0x72, 0x72);
 
   return EXIT_SUCCESS;
 }

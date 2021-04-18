@@ -46,16 +46,26 @@ So use it at your own risk and be aware that you're playing around with your BIO
     cd ./yoga-bios-unlock
     make
 
-    # ./yoga-bios-unlock --dry-run
-    Enabled dry-run
-    WARNING: use at your own risk!
-    Agree? (y/Y) y
-    Port 0x72 is 0xf4 and would be set to 0xf7
-    Port 0x73 is 0x00 and would be set to 0x77
-
-    # ./yoga-bios-unlock          
+    # ./yoga-bios-unlock --read
+    Run in read mode
+    Be aware that readmode temporarily changes value of port 0x72 to index 0xf7
     WARNING: use at your own risk!
     Agree? (y/n) y
+    Port 0x72 is 0xf4 and will be set to 0xf7
+    Port 0x73 is 0x00 and would be set to 0x77
+
+    # ./yoga-bios-unlock --unlock
+    Run in unlock mode
+    WARNING: use at your own risk!
+    Agree? (y/n) y
+    Port 0x72 is 0xf4 and will be set to 0xf7
+
+
+    # ./yoga-bios-unlock --unlock
+    Run in lock mode
+    WARNING: use at your own risk!
+    Agree? (y/n) y
+    Port 0x72 is 0xf4 and will be set to 0xf7
 
 ## Compatibility
 
