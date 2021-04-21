@@ -73,9 +73,13 @@ If you hit the following issue please disable secure boot first and try again:
 
 ## Compatibility
 
-    | Version  | Tested by me | Tested by others |
-    | -------- | ------------ | ---------------- |
-    | DMCN27WW |              | x                |
-    | DMCN32WW | x            | x                |
-    | DMCN34WW | x            | x                |
-    | DMCN38WW |              | x                |
+    | Version  | Missing features    |
+    | -------- | ------------------- |
+    | DMCN27WW |                     |
+    | DMCN32WW |                     |
+    | DMCN34WW | no XFR enhancements |
+    | DMCN36WW | no XFR enhancements |
+    | DMCN38WW | no XFR enhancements |
+
+If you're aware of any further differences in BIOS version please raise a [ticket](https://github.com/esno/yoga-bios-unlock/issues/new)
+or open a pull request.
