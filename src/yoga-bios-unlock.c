@@ -62,7 +62,7 @@ int is_yoga(void) {
 
   dmi_strings_t bios_vendor = { .string = __BIOS_VENDOR, .next = NULL };
   dmi_strings_t bios_version_38 = { .string = __BIOS_VERSION_38, .next = NULL };
-  dmi_strings_t bios_version_34 = { .string = __BIOS_VERSION_36, .next = &bios_version_38 };
+  dmi_strings_t bios_version_36 = { .string = __BIOS_VERSION_36, .next = &bios_version_38 };
   dmi_strings_t bios_version_34 = { .string = __BIOS_VERSION_34, .next = &bios_version_36 };
   dmi_strings_t bios_version_32 = { .string = __BIOS_VERSION_32, .next = &bios_version_34 };
   dmi_strings_t bios_version_27 = { .string = __BIOS_VERSION_27, .next = &bios_version_32 };
