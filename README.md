@@ -4,7 +4,7 @@ Based on FlyGoat's work to unlock the BIOS advanced menu documented [here](https
 I wrote that tool to unlock my yoga laptop without using a proprietary software which is only available on Windows.
 
 I'd like to thank FlyGoat a lot for giving me the right direction on how to translate his guide into low-level functions
-provided by glibc.
+provided by glibc (see also [FlyGoats gist](https://gist.github.com/FlyGoat/5f0dba5b5ccc1b6ab73023489e1e989a)).
 
 This tool will unlock the advanced menu in your Lenovo Yoga Slim 7 14ARE05.
 
