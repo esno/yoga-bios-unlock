@@ -12,6 +12,7 @@
 
 #define __BIOS_VENDOR "LENOVO"
 #define __BIOS_VERSION_27 "DMCN27WW"
+#define __BIOS_VERSION_29 "DMCN29WW"
 #define __BIOS_VERSION_32 "DMCN32WW"
 #define __BIOS_VERSION_34 "DMCN34WW"
 #define __BIOS_VERSION_36 "DMCN36WW"
@@ -65,7 +66,8 @@ int is_yoga(void) {
   dmi_strings_t bios_version_36 = { .string = __BIOS_VERSION_36, .next = &bios_version_38 };
   dmi_strings_t bios_version_34 = { .string = __BIOS_VERSION_34, .next = &bios_version_36 };
   dmi_strings_t bios_version_32 = { .string = __BIOS_VERSION_32, .next = &bios_version_34 };
-  dmi_strings_t bios_version_27 = { .string = __BIOS_VERSION_27, .next = &bios_version_32 };
+  dmi_strings_t bios_version_29 = { .string = __BIOS_VERSION_29, .next = &bios_version_32 };
+  dmi_strings_t bios_version_27 = { .string = __BIOS_VERSION_27, .next = &bios_version_29 };
   dmi_strings_t board_name = { .string = __BOARD_NAME, .next = NULL };
   dmi_strings_t board_vendor = { .string = __BOARD_VENDOR, .next = NULL };
   dmi_strings_t board_version_09 = { .string = __BOARD_VERSION_09, .next = NULL };
