@@ -22,6 +22,7 @@
 #define __BOARD_VENDOR "LENOVO"
 #define __BOARD_VERSION_00 "SDK0J40700 WIN  "
 #define __BOARD_VERSION_09 "SDK0J40709 WIN  "
+#define __BOARD_VERSION_26 "SDK0Q55726 WIN  "
 
 #define __CHASSIS_VERSION "Yoga Slim 7 14ARE05"
 
@@ -70,7 +71,8 @@ int is_yoga(void) {
   dmi_strings_t bios_version_27 = { .string = __BIOS_VERSION_27, .next = &bios_version_29 };
   dmi_strings_t board_name = { .string = __BOARD_NAME, .next = NULL };
   dmi_strings_t board_vendor = { .string = __BOARD_VENDOR, .next = NULL };
-  dmi_strings_t board_version_09 = { .string = __BOARD_VERSION_09, .next = NULL };
+  dmi_strings_t board_version_26 = { .string = __BOARD_VERSION_26, .next = NULL };
+  dmi_strings_t board_version_09 = { .string = __BOARD_VERSION_09, .next = &board_version_26 };
   dmi_strings_t board_version_00 = { .string = __BOARD_VERSION_00, .next = &board_version_09 };
   dmi_strings_t chassis_version = { .string = __CHASSIS_VERSION, .next = NULL };
 
