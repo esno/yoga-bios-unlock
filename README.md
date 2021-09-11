@@ -79,6 +79,7 @@ If you hit the following issue please disable secure boot first and try again:
     | DMCN29WW |                     |
     | DMCN32WW |                     |
     | DMCN34WW | no XFR enhancements |
+    | DMCN35WW | no XFR enhancements |
     | DMCN36WW | no XFR enhancements |
     | DMCN38WW | no XFR enhancements |
 
