@@ -30,46 +30,7 @@ Port `0x72` is the index port that defines which value at `0x73` will be accesse
       d0 | 00 40 14 00 02 00 82 00 00 00 00 80 81 08 00 80
       e0 | 00 02 00 01 00 00 00 00 00 00 00 00 00 00 01 00
     > f0 | 29 a4 a7 a7 00 00 00 77 e0 00 24 04 00 10 10 00
-                                ^^
-
-## Disclaimer
-
-This tool may eat your cat, burn your house or do anything else beside the expected task.
-So use it at your own risk and be aware that you're playing around with your BIOS which may end in a bricked device.
-
-## Usage
-
-> BIOS version `DMCN34WW` is supported but hides some menus.
-> Using `DMCN32WW` is recommended.
-
-    git clone https://github.com/esno/yoga-bios-unlock.git
-    cd ./yoga-bios-unlock
-    make
-
-    # ./yoga-bios-unlock --read
-    Run in read mode
-    Be aware that readmode temporarily changes value of port 0x72 to index 0xf7
-    WARNING: use at your own risk!
-    Agree? (y/n) y
-    Port 0x72 is 0xf4 and will be set to 0xf7
-    Port 0x73 is 0x00 and would be set to 0x77
-
-    # ./yoga-bios-unlock --unlock
-    Run in unlock mode
-    WARNING: use at your own risk!
-    Agree? (y/n) y
-    Port 0x72 is 0xf4 and will be set to 0xf7
-
-
-    # ./yoga-bios-unlock --lock
-    Run in lock mode
-    WARNING: use at your own risk!
-    Agree? (y/n) y
-    Port 0x72 is 0xf4 and will be set to 0xf7
-
-If you hit the following issue please disable secure boot first and try again:
-
-    Can't set I/O privilege level (Operation not permitted)
+                                /\
 
 ## Compatibility
 
@@ -85,3 +46,51 @@ If you hit the following issue please disable secure boot first and try again:
 
 If you're aware of any further differences in BIOS version please raise a [ticket](https://github.com/esno/yoga-bios-unlock/issues/new)
 or open a pull request.
+
+## Disclaimer
+
+This tool may eat your cat, burn your house or do anything else beside the expected task.
+So use it at your own risk and be aware that you're playing around with your BIOS which may end in a bricked device.
+
+## Known Issues
+
+If you hit the following issue please disable secure boot first and try again:
+
+    Can't set I/O privilege level (Operation not permitted)
+
+## Usage
+
+> BIOS versions greater or equal to `DMCN34WW` are supported but hiding some menus.
+> Using `DMCN32WW` is recommended.
+
+### Build from source
+
+    git clone https://github.com/esno/yoga-bios-unlock.git
+    cd ./yoga-bios-unlock
+    make
+
+### Verify current value of data port
+
+    # ./yoga-bios-unlock --read
+    Run in read mode
+    Be aware that readmode temporarily changes value of port 0x72 to index 0xf7
+    WARNING: use at your own risk!
+    Agree? (y/n) y
+    Port 0x72 is 0xf4 and will be set to 0xf7
+    Port 0x73 is 0x00 and would be set to 0x77
+
+### Unlock your BIOS
+
+    # ./yoga-bios-unlock --unlock
+    Run in unlock mode
+    WARNING: use at your own risk!
+    Agree? (y/n) y
+    Port 0x72 is 0xf4 and will be set to 0xf7
+
+### Lock your BIOS
+
+    # ./yoga-bios-unlock --lock
+    Run in lock mode
+    WARNING: use at your own risk!
+    Agree? (y/n) y
+    Port 0x72 is 0xf4 and will be set to 0xf7
