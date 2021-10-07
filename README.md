@@ -47,6 +47,37 @@ Port `0x72` is the index port that defines which value at `0x73` will be accesse
 If you're aware of any further differences in BIOS version please raise a [ticket](https://github.com/esno/yoga-bios-unlock/issues/new)
 or open a pull request.
 
+### BIOS downgrade
+
+Boot into BIOS and go to `Configuration` tab.
+There is an option called `BIOS Back Flash` which is disabled by default.
+
+The product page of [lenovo's Yoga Slim 7](https://pcsupport.lenovo.com/de/de/products/laptops-and-netbooks/ideapad-s-series-netbooks/slim-7-14are05/downloads/driver-list/component?name=BIOS)
+provides the latest BIOS version. Thanks to lenovo they do not obfuscate their download links therefore
+it's quiet easy to estimate former versions and download them.
+
+Former BIOS versions are available at lenovo servers:
+
+* [DMCN27WW](https://download.lenovo.com/consumer/mobiles/dmcn27ww.exe)
+* [DMCN29WW](https://download.lenovo.com/consumer/mobiles/dmcn29ww.exe)
+* [DMCN32WW](https://download.lenovo.com/consumer/mobiles/dmcn32ww.exe)
+* [DMCN34WW](https://download.lenovo.com/consumer/mobiles/dmcn34ww.exe)
+* [DMCN35WW](https://download.lenovo.com/consumer/mobiles/dmcn35ww.exe)
+* [DMCN36WW](https://download.lenovo.com/consumer/mobiles/dmcn36ww.exe)
+* [DMCN38WW](https://download.lenovo.com/consumer/mobiles/dmcn38ww.exe)
+* [DMCN39WW](https://download.lenovo.com/consumer/mobiles/dmcn39ww.exe)
+
+Readme and installation instructions are also available:
+
+* [DMCN27WW](https://download.lenovo.com/consumer/mobiles/dmcn27ww.txt)
+* [DMCN29WW](https://download.lenovo.com/consumer/mobiles/dmcn29ww.txt)
+* [DMCN32WW](https://download.lenovo.com/consumer/mobiles/dmcn32ww.txt)
+* [DMCN34WW](https://download.lenovo.com/consumer/mobiles/dmcn34ww.txt)
+* [DMCN35WW](https://download.lenovo.com/consumer/mobiles/dmcn35ww.txt)
+* [DMCN36WW](https://download.lenovo.com/consumer/mobiles/dmcn36ww.txt)
+* [DMCN38WW](https://download.lenovo.com/consumer/mobiles/dmcn38ww.txt)
+* [DMCN39WW](https://download.lenovo.com/consumer/mobiles/dmcn39ww.txt)
+
 ## Disclaimer
 
 This tool may eat your cat, burn your house or do anything else beside the expected task.
