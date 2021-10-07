@@ -21,6 +21,7 @@
 
 #define __BOARD_NAME "LNVNB161216"
 #define __BOARD_VENDOR "LENOVO"
+#define __BOARD_VERSION_88 "SDK0J40688 WIN  "
 #define __BOARD_VERSION_00 "SDK0J40700 WIN  "
 #define __BOARD_VERSION_09 "SDK0J40709 WIN  "
 #define __BOARD_VERSION_26 "SDK0Q55726 WIN  "
@@ -76,6 +77,7 @@ int is_yoga(void) {
   dmi_strings_t board_version_26 = { .string = __BOARD_VERSION_26, .next = NULL };
   dmi_strings_t board_version_09 = { .string = __BOARD_VERSION_09, .next = &board_version_26 };
   dmi_strings_t board_version_00 = { .string = __BOARD_VERSION_00, .next = &board_version_09 };
+  dmi_strings_t board_version_88 = { .string = __BOARD_VERSION_88, .next = &board_version_00 };
   dmi_strings_t chassis_version = { .string = __CHASSIS_VERSION, .next = NULL };
 
   if (check_dmi("bios_vendor", &bios_vendor) < 0)
@@ -86,7 +88,7 @@ int is_yoga(void) {
     rc = -3;
   if (check_dmi("board_vendor", &board_vendor) < 0)
     rc = -4;
-  if (check_dmi("board_version", &board_version_00) < 0)
+  if (check_dmi("board_version", &board_version_88) < 0)
     rc = -5;
   if (check_dmi("chassis_version", &chassis_version) < 0)
     rc = -6;
