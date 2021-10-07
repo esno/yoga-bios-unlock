@@ -125,3 +125,18 @@ If you hit the following issue please disable secure boot first and try again:
     WARNING: use at your own risk!
     Agree? (y/n) y
     Port 0x72 is 0xf4 and will be set to 0xf7
+
+### Ignore platform check results
+
+If you know that you're on Lenovo Yoga Slim 7 (14ARE05) but either board version migh differ
+or BIOS version is currently not supported by this tool you can enforce a unlock.
+If you do please open a ticket/PR to notify me that your current BIOS version/board version works well.
+
+#### Enforce unlock your BIOS
+
+    # ./yoga-bios-unlock --unlock --force
+    Run in unlock mode
+    Platform checks are disabled - hopefully you know what you do
+    WARNING: use at your own risk!
+    Agree? (y/n) y
+    Port 0x72 is 0xf4 and will be set to 0xf7

@@ -137,10 +137,11 @@ int main(int argc, const char **argv) {
   char ack;
   // 0 = reserved, 1 = read, 2 = unlock, 3 = lock
   uint8_t mode = 0;
+  uint8_t force = 0;
   unsigned char p0x72;
 
-  if (argc != 2) {
-    fprintf(stdout, "USAGE: %s [-r|--read] [-u|--unlock] [-l|--lock]\n", argv[0]);
+  if (argc < 2 || argc > 3) {
+    fprintf(stdout, "USAGE: %s [-r|--read] [-u|--unlock] [-l|--lock] [-f|--force]\n", argv[0]);
     return EXIT_FAILURE;
   }
 
@@ -160,7 +161,14 @@ int main(int argc, const char **argv) {
     mode = 3;
   }
 
-  if (is_yoga() < 0) {
+  if (argc == 3) {
+    if ((strcmp(argv[2], "--force") == 0 || strcmp(argv[2], "-f") == 0)) {
+      fprintf(stdout, "Platform checks are disabled - hopefully you know what you do\n");
+      force = 1;
+    }
+  }
+
+  if (is_yoga() < 0 && force == 0) {
     fprintf(stderr, "Wrong device, aborting!\n");
     return EXIT_FAILURE;
   }
