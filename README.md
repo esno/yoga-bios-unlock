@@ -32,6 +32,11 @@ Port `0x72` is the index port that defines which value at `0x73` will be accesse
     > f0 | 29 a4 a7 a7 00 00 00 77 e0 00 24 04 00 10 10 00
                                 /\
 
+## Disclaimer
+
+> This tool may eat your cat, burn your house or do anything else beside the expected task.
+> So use it at your own risk and be aware that you're playing around with your BIOS which may end in a bricked device.
+
 ## Compatibility
 
     | Version  | Missing features    |
@@ -56,32 +61,16 @@ The product page of [lenovo's Yoga Slim 7](https://pcsupport.lenovo.com/de/de/pr
 provides the latest BIOS version. Thanks to lenovo they do not obfuscate their download links therefore
 it's quiet easy to estimate former versions and download them.
 
-Former BIOS versions are available at lenovo servers:
+Former BIOS versions are available at lenovo servers (Readme and installation instructions are also available):
 
-* [DMCN27WW](https://download.lenovo.com/consumer/mobiles/dmcn27ww.exe)
-* [DMCN29WW](https://download.lenovo.com/consumer/mobiles/dmcn29ww.exe)
-* [DMCN32WW](https://download.lenovo.com/consumer/mobiles/dmcn32ww.exe)
-* [DMCN34WW](https://download.lenovo.com/consumer/mobiles/dmcn34ww.exe)
-* [DMCN35WW](https://download.lenovo.com/consumer/mobiles/dmcn35ww.exe)
-* [DMCN36WW](https://download.lenovo.com/consumer/mobiles/dmcn36ww.exe)
-* [DMCN38WW](https://download.lenovo.com/consumer/mobiles/dmcn38ww.exe)
-* [DMCN39WW](https://download.lenovo.com/consumer/mobiles/dmcn39ww.exe)
-
-Readme and installation instructions are also available:
-
-* [DMCN27WW](https://download.lenovo.com/consumer/mobiles/dmcn27ww.txt)
-* [DMCN29WW](https://download.lenovo.com/consumer/mobiles/dmcn29ww.txt)
-* [DMCN32WW](https://download.lenovo.com/consumer/mobiles/dmcn32ww.txt)
-* [DMCN34WW](https://download.lenovo.com/consumer/mobiles/dmcn34ww.txt)
-* [DMCN35WW](https://download.lenovo.com/consumer/mobiles/dmcn35ww.txt)
-* [DMCN36WW](https://download.lenovo.com/consumer/mobiles/dmcn36ww.txt)
-* [DMCN38WW](https://download.lenovo.com/consumer/mobiles/dmcn38ww.txt)
-* [DMCN39WW](https://download.lenovo.com/consumer/mobiles/dmcn39ww.txt)
-
-## Disclaimer
-
-This tool may eat your cat, burn your house or do anything else beside the expected task.
-So use it at your own risk and be aware that you're playing around with your BIOS which may end in a bricked device.
+* [DMCN27WW](https://download.lenovo.com/consumer/mobiles/dmcn27ww.exe) ([ReadMe](https://download.lenovo.com/consumer/mobiles/dmcn27ww.txt))
+* [DMCN29WW](https://download.lenovo.com/consumer/mobiles/dmcn29ww.exe) ([ReadMe](https://download.lenovo.com/consumer/mobiles/dmcn29ww.txt))
+* [DMCN32WW](https://download.lenovo.com/consumer/mobiles/dmcn32ww.exe) ([ReadMe](https://download.lenovo.com/consumer/mobiles/dmcn32ww.txt))
+* [DMCN34WW](https://download.lenovo.com/consumer/mobiles/dmcn34ww.exe) ([ReadMe](https://download.lenovo.com/consumer/mobiles/dmcn34ww.txt))
+* [DMCN35WW](https://download.lenovo.com/consumer/mobiles/dmcn35ww.exe) ([ReadMe](https://download.lenovo.com/consumer/mobiles/dmcn35ww.txt))
+* [DMCN36WW](https://download.lenovo.com/consumer/mobiles/dmcn36ww.exe) ([ReadMe](https://download.lenovo.com/consumer/mobiles/dmcn36ww.txt))
+* [DMCN38WW](https://download.lenovo.com/consumer/mobiles/dmcn38ww.exe) ([ReadMe](https://download.lenovo.com/consumer/mobiles/dmcn38ww.txt))
+* [DMCN39WW](https://download.lenovo.com/consumer/mobiles/dmcn39ww.exe) ([ReadMe](https://download.lenovo.com/consumer/mobiles/dmcn39ww.txt))
 
 ## Known Issues
 
@@ -128,8 +117,8 @@ If you hit the following issue please disable secure boot first and try again:
 
 ### Ignore platform check results
 
-If you know that you're on Lenovo Yoga Slim 7 (14ARE05) but either board version migh differ
-or BIOS version is currently not supported by this tool you can enforce a unlock.
+If you know that you're on Lenovo Yoga Slim 7 (14ARE05) but either board version might differ
+or BIOS version is currently not supported by this tool you can enforce an unlock.
 If you do please open a ticket/PR to notify me that your current BIOS version/board version works well.
 
 #### Enforce unlock your BIOS
