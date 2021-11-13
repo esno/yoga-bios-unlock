@@ -48,6 +48,7 @@ Port `0x72` is the index port that defines which value at `0x73` will be accesse
     | DMCN35WW | no XFR enhancements |
     | DMCN36WW | no XFR enhancements |
     | DMCN38WW | no XFR enhancements |
+    | DMCN39WW | no XFR enhancements |
 
 If you're aware of any further differences in BIOS version please raise a [ticket](https://github.com/esno/yoga-bios-unlock/issues/new)
 or open a pull request.

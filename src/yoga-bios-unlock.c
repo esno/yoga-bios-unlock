@@ -18,6 +18,7 @@
 #define __BIOS_VERSION_35 "DMCN35WW"
 #define __BIOS_VERSION_36 "DMCN36WW"
 #define __BIOS_VERSION_38 "DMCN38WW"
+#define __BIOS_VERSION_39 "DMCN39WW"
 
 #define __BOARD_NAME "LNVNB161216"
 #define __BOARD_VENDOR "LENOVO"
@@ -65,19 +66,24 @@ int is_yoga(void) {
   int rc = 0;
 
   dmi_strings_t bios_vendor = { .string = __BIOS_VENDOR, .next = NULL };
-  dmi_strings_t bios_version_38 = { .string = __BIOS_VERSION_38, .next = NULL };
+
+  dmi_strings_t bios_version_39 = { .string = __BIOS_VERSION_39, .next = NULL };
+  dmi_strings_t bios_version_38 = { .string = __BIOS_VERSION_38, .next = &bios_version_39 };
   dmi_strings_t bios_version_36 = { .string = __BIOS_VERSION_36, .next = &bios_version_38 };
   dmi_strings_t bios_version_35 = { .string = __BIOS_VERSION_35, .next = &bios_version_36 };
   dmi_strings_t bios_version_34 = { .string = __BIOS_VERSION_34, .next = &bios_version_35 };
   dmi_strings_t bios_version_32 = { .string = __BIOS_VERSION_32, .next = &bios_version_34 };
   dmi_strings_t bios_version_29 = { .string = __BIOS_VERSION_29, .next = &bios_version_32 };
   dmi_strings_t bios_version_27 = { .string = __BIOS_VERSION_27, .next = &bios_version_29 };
+
   dmi_strings_t board_name = { .string = __BOARD_NAME, .next = NULL };
   dmi_strings_t board_vendor = { .string = __BOARD_VENDOR, .next = NULL };
+
   dmi_strings_t board_version_26 = { .string = __BOARD_VERSION_26, .next = NULL };
   dmi_strings_t board_version_09 = { .string = __BOARD_VERSION_09, .next = &board_version_26 };
   dmi_strings_t board_version_00 = { .string = __BOARD_VERSION_00, .next = &board_version_09 };
   dmi_strings_t board_version_88 = { .string = __BOARD_VERSION_88, .next = &board_version_00 };
+
   dmi_strings_t chassis_version = { .string = __CHASSIS_VERSION, .next = NULL };
 
   if (check_dmi("bios_vendor", &bios_vendor) < 0)
