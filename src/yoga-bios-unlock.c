@@ -51,7 +51,7 @@ int check_dmi(const char *file, dmi_strings_t *dmi) {
   }
 
   while (ptr != NULL) {
-    if (strcmp(ptr->string, buffer) == 0) {
+    if (memcmp(ptr->string, buffer, strlen(ptr->string)) == 0) {
       return 0;
     }
 
