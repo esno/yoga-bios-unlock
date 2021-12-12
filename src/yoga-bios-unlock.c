@@ -35,11 +35,11 @@ struct dmi_strings {
   dmi_strings_t *next;
 };
 
-int check_dmi(const char *file, dmi_strings_t *dmi);
+int check_dmi(const char *file, dmi_strings_t *dmi, uint8_t dmi_workaround);
 int is_yoga(void);
 int read_sysfs(const char *file, char *buffer, size_t n);
 
-int check_dmi(const char *file, dmi_strings_t *dmi) {
+int check_dmi(const char *file, dmi_strings_t *dmi, uint8_t dmi_workaround) {
   size_t l = 128;
   char buffer[l];
   dmi_strings_t *ptr = dmi;
@@ -51,8 +51,12 @@ int check_dmi(const char *file, dmi_strings_t *dmi) {
   }
 
   while (ptr != NULL) {
-    if (memcmp(ptr->string, buffer, strlen(ptr->string)) == 0) {
-      return 0;
+    if (dmi_workaround == 1) {
+      if (memcmp(ptr->string, buffer, strlen(ptr->string)) == 0)
+        return 0;
+    } else {
+      if (strcmp(ptr->string, buffer) == 0)
+        return 0;
     }
 
     ptr = ptr->next;
@@ -86,17 +90,17 @@ int is_yoga(void) {
 
   dmi_strings_t chassis_version = { .string = __CHASSIS_VERSION, .next = NULL };
 
-  if (check_dmi("bios_vendor", &bios_vendor) < 0)
+  if (check_dmi("bios_vendor", &bios_vendor, 0) < 0)
     rc = -1;
-  if (check_dmi("bios_version", &bios_version_27) < 0)
+  if (check_dmi("bios_version", &bios_version_27, 0) < 0)
     rc = -2;
-  if (check_dmi("board_name", &board_name) < 0)
+  if (check_dmi("board_name", &board_name, 0) < 0)
     rc = -3;
-  if (check_dmi("board_vendor", &board_vendor) < 0)
+  if (check_dmi("board_vendor", &board_vendor, 0) < 0)
     rc = -4;
-  if (check_dmi("board_version", &board_version_88) < 0)
+  if (check_dmi("board_version", &board_version_88, 1) < 0)
     rc = -5;
-  if (check_dmi("chassis_version", &chassis_version) < 0)
+  if (check_dmi("chassis_version", &chassis_version, 0) < 0)
     rc = -6;
 
   return rc;
