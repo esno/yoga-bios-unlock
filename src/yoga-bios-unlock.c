@@ -8,42 +8,17 @@
 #include <sys/io.h>
 #include <sys/types.h>
 
+#include "yoga.h"
+
 #define __DMI_PATH "/sys/class/dmi/id"
 
-#define __BIOS_VENDOR "LENOVO"
-#define __BIOS_VERSION_27 "DMCN27WW"
-#define __BIOS_VERSION_29 "DMCN29WW"
-#define __BIOS_VERSION_32 "DMCN32WW"
-#define __BIOS_VERSION_34 "DMCN34WW"
-#define __BIOS_VERSION_35 "DMCN35WW"
-#define __BIOS_VERSION_36 "DMCN36WW"
-#define __BIOS_VERSION_38 "DMCN38WW"
-#define __BIOS_VERSION_39 "DMCN39WW"
-
-#define __BOARD_NAME "LNVNB161216"
-#define __BOARD_VENDOR "LENOVO"
-#define __BOARD_VERSION_97 "SDK0J40697 WIN  "
-#define __BOARD_VERSION_88 "SDK0J40688 WIN  "
-#define __BOARD_VERSION_00 "SDK0J40700 WIN  "
-#define __BOARD_VERSION_09 "SDK0J40709 WIN  "
-#define __BOARD_VERSION_26 "SDK0Q55726 WIN  "
-
-#define __CHASSIS_VERSION "Yoga Slim 7 14ARE05"
-
-typedef struct dmi_strings dmi_strings_t;
-struct dmi_strings {
-  const char *string;
-  dmi_strings_t *next;
-};
-
-int check_dmi(const char *file, dmi_strings_t *dmi, uint8_t dmi_workaround);
+int check_dmi(const char *file, char *value, uint8_t dmi_workaround);
 int is_yoga(void);
 int read_sysfs(const char *file, char *buffer, size_t n);
 
-int check_dmi(const char *file, dmi_strings_t *dmi, uint8_t dmi_workaround) {
+int check_dmi(const char *file, char *value, uint8_t dmi_workaround) {
   size_t l = 128;
   char buffer[l];
-  dmi_strings_t *ptr = dmi;
 
   memset(buffer, 0, 128);
   if (read_sysfs(file, buffer, l) < 0) {
@@ -51,61 +26,69 @@ int check_dmi(const char *file, dmi_strings_t *dmi, uint8_t dmi_workaround) {
     return -1;
   }
 
-  while (ptr != NULL) {
-    if (dmi_workaround == 1) {
-      if (memcmp(ptr->string, buffer, strlen(ptr->string)) == 0)
-        return 0;
-    } else {
-      if (strcmp(ptr->string, buffer) == 0)
-        return 0;
-    }
-
-    ptr = ptr->next;
+  if (dmi_workaround == 1) {
+    if (memcmp(value, buffer, strlen(value)) == 0)
+      return 0;
+  } else {
+    if (strcmp(value, buffer) == 0)
+      return 0;
   }
 
-  fprintf(stderr, "%s does not match (%s)\n", file, buffer);
   return -2;
 }
 
 int is_yoga(void) {
-  int rc = 0;
+  int chk = 0;
+  unsigned int i = 0;
+  char bios_version[BIOS_VERSION_LEN + 1];
+  char board_version[BOARD_VERSION_LEN + 3];
 
-  dmi_strings_t bios_vendor = { .string = __BIOS_VENDOR, .next = NULL };
+  if (check_dmi("bios_vendor", BIOS_VENDOR, 0) < 0) {
+    fprintf(stderr, "bios vendor does not match\n");
+    return -1;
+  }
+  if (check_dmi("board_vendor", BOARD_VENDOR, 0) < 0) {
+    fprintf(stderr, "board vendor does not match\n");
+    return -2;
+  }
+  if (check_dmi("board_name", BOARD_NAME, 0) < 0) {
+    fprintf(stderr, "board name does not match\n");
+    return -3;
+  }
+  if (check_dmi("chassis_version", CHASSIS_VERSION, 0) < 0) {
+    fprintf(stderr, "chassis version does not match\n");
+    return -4;
+  }
 
-  dmi_strings_t bios_version_39 = { .string = __BIOS_VERSION_39, .next = NULL };
-  dmi_strings_t bios_version_38 = { .string = __BIOS_VERSION_38, .next = &bios_version_39 };
-  dmi_strings_t bios_version_36 = { .string = __BIOS_VERSION_36, .next = &bios_version_38 };
-  dmi_strings_t bios_version_35 = { .string = __BIOS_VERSION_35, .next = &bios_version_36 };
-  dmi_strings_t bios_version_34 = { .string = __BIOS_VERSION_34, .next = &bios_version_35 };
-  dmi_strings_t bios_version_32 = { .string = __BIOS_VERSION_32, .next = &bios_version_34 };
-  dmi_strings_t bios_version_29 = { .string = __BIOS_VERSION_29, .next = &bios_version_32 };
-  dmi_strings_t bios_version_27 = { .string = __BIOS_VERSION_27, .next = &bios_version_29 };
+  for (i = 0; i < bios_versions_len; i += (BIOS_VERSION_LEN + 1)) {
+    memset(&bios_version, 0, sizeof(char) * (BIOS_VERSION_LEN + 1));
+    memcpy(&bios_version, &bios_versions[i], sizeof(char) * BIOS_VERSION_LEN);
+    chk = check_dmi("bios_version", bios_version, 0);
+    if (chk == 0)
+      break;
+  }
 
-  dmi_strings_t board_name = { .string = __BOARD_NAME, .next = NULL };
-  dmi_strings_t board_vendor = { .string = __BOARD_VENDOR, .next = NULL };
+  if (chk < 0) {
+    fprintf(stderr, "bios version does not match\n");
+    return -5;
+  }
 
-  dmi_strings_t board_version_26 = { .string = __BOARD_VERSION_26, .next = NULL };
-  dmi_strings_t board_version_97 = { .string = __BOARD_VERSION_97, .next = &board_version_26 };
-  dmi_strings_t board_version_09 = { .string = __BOARD_VERSION_09, .next = &board_version_97 };
-  dmi_strings_t board_version_00 = { .string = __BOARD_VERSION_00, .next = &board_version_09 };
-  dmi_strings_t board_version_88 = { .string = __BOARD_VERSION_88, .next = &board_version_00 };
+  for (i = 0; i < board_versions_len; i += (BOARD_VERSION_LEN + 1)) {
+    memset(&board_version, 0, sizeof(char) * (BOARD_VERSION_LEN + 1));
+    memcpy(&board_version, &board_versions[i], sizeof(char) * BOARD_VERSION_LEN);
+    board_version[14] = ' ';
+    board_version[15] = ' ';
+    chk = check_dmi("board_version", board_version, 1);
+    if (chk == 0)
+      break;
+  }
 
-  dmi_strings_t chassis_version = { .string = __CHASSIS_VERSION, .next = NULL };
+  if (chk < 0) {
+    fprintf(stderr, "board version does not match\n");
+    return -6;
+  }
 
-  if (check_dmi("bios_vendor", &bios_vendor, 0) < 0)
-    rc = -1;
-  if (check_dmi("bios_version", &bios_version_27, 0) < 0)
-    rc = -2;
-  if (check_dmi("board_name", &board_name, 0) < 0)
-    rc = -3;
-  if (check_dmi("board_vendor", &board_vendor, 0) < 0)
-    rc = -4;
-  if (check_dmi("board_version", &board_version_88, 1) < 0)
-    rc = -5;
-  if (check_dmi("chassis_version", &chassis_version, 0) < 0)
-    rc = -6;
-
-  return rc;
+  return 0;
 }
 
 void lock_bios(void) {

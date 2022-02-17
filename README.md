@@ -52,6 +52,11 @@ Port `0x72` is the index port that defines which value at `0x73` will be accesse
 
 If you're aware of any further differences in BIOS version please raise a [ticket](https://github.com/esno/yoga-bios-unlock/issues/new)
 or open a pull request.
+New supported bios and board versions can be added by appending the version string either to [bios-versions.txt](https://github.com/esno/yoga-bios-unlock/blob/master/bios-versions.txt)
+or to [board-versions.txt](https://github.com/esno/yoga-bios-unlock/blob/master/board-versions.txt).
+Afterwards the headers needs to be regenerated
+
+    make headers
 
 ### BIOS downgrade
 
