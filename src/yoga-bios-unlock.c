@@ -12,6 +12,13 @@
 
 #define __DMI_PATH "/sys/class/dmi/id"
 
+enum {
+  MODE_RESERVED = 0,
+  MODE_READ = 1,
+  MODE_UNLOCK = 2,
+  MODE_LOCK = 3
+} runmodes;
+
 int check_dmi(const char *file, char *value, uint8_t dmi_workaround);
 int is_yoga(void);
 int read_sysfs(const char *file, char *buffer, size_t n);
@@ -91,16 +98,6 @@ int is_yoga(void) {
   return 0;
 }
 
-void lock_bios(void) {
-  outb_p(0xf7, 0x72);
-  outb_p(0x00, 0x73);
-}
-
-void read_pin(void) {
-  outb_p(0xf7, 0x72);
-  fprintf(stdout, "Port 0x73 is 0x%02x and would be set to 0x77\n", inb_p(0x73));
-}
-
 int read_sysfs(const char *file, char *buffer, size_t n) {
   size_t l = strlen(__DMI_PATH) + strlen(file) + 2;
   char filename[l];
@@ -125,17 +122,12 @@ int read_sysfs(const char *file, char *buffer, size_t n) {
   return 0;
 }
 
-void unlock_bios(void) {
-  outb_p(0xf7, 0x72);
-  outb_p(0x77, 0x73);
-}
-
 int main(int argc, const char **argv) {
   char ack;
   // 0 = reserved, 1 = read, 2 = unlock, 3 = lock
-  uint8_t mode = 0;
+  uint8_t mode = MODE_RESERVED;
   uint8_t force = 0;
-  unsigned char p0x72;
+  unsigned char cache;
 
   if (argc < 2 || argc > 3) {
     fprintf(stdout, "USAGE: %s [-r|--read] [-u|--unlock] [-l|--lock] [-f|--force]\n", argv[0]);
@@ -144,18 +136,19 @@ int main(int argc, const char **argv) {
 
   if ((strcmp(argv[1], "--read") == 0 || strcmp(argv[1], "-r") == 0)) {
     fprintf(stdout, "Run in read mode\n");
-    fprintf(stdout, "Be aware that readmode temporarily changes value of port 0x72 to index 0xf7\n");
-    mode = 1;
+    fprintf(stdout, "Be aware that readmode temporarily changes value of port 0x%02x to index 0x%02x\n",
+      PORT_INDEX, PORT_INDEX_VALUE);
+    mode = MODE_READ;
   }
 
   if ((strcmp(argv[1], "--unlock") == 0 || strcmp(argv[1], "-u") == 0)) {
     fprintf(stdout, "Run in unlock mode\n");
-    mode = 2;
+    mode = MODE_UNLOCK;
   }
 
   if ((strcmp(argv[1], "--lock") == 0 || strcmp(argv[1], "-l") == 0)) {
     fprintf(stdout, "Run in lock mode\n");
-    mode = 3;
+    mode = MODE_LOCK;
   }
 
   if (argc == 3) {
@@ -193,27 +186,30 @@ int main(int argc, const char **argv) {
     return EXIT_FAILURE;
   }
 
-  if (ioperm(0x72, 2, 1) < 0) {
+  if (ioperm(PORT_INDEX, 2, 1) < 0) {
     fprintf(stderr, "Can't set I/O permission (%s)\n", strerror(errno));
     return EXIT_FAILURE;
   }
 
-  p0x72 = inb_p(0x72);
-  fprintf(stdout, "Port 0x72 is 0x%02x and will be set to 0xf7\n", p0x72);
+  cache = inb_p(PORT_INDEX);
+  fprintf(stdout, "Port 0x%02x is 0x%02x and will be set to 0x%02x\n",
+    PORT_INDEX, cache, PORT_INDEX_VALUE);
+  outb_p(PORT_INDEX_VALUE, PORT_INDEX);
 
   switch (mode) {
-    case 1:
-      read_pin();
+    case MODE_READ:
+      fprintf(stdout, "Port 0x%02x is 0x%02x\n",
+        PORT_DATA, inb_p(PORT_DATA));
       break;
-    case 2:
-      unlock_bios();
+    case MODE_UNLOCK:
+      outb_p(PORT_DATA_VALUE_UNLOCK, PORT_DATA);
       break;
-    case 3:
-      lock_bios();
+    case MODE_LOCK:
+      outb_p(PORT_DATA_VALUE_LOCK, PORT_DATA);
       break;
   }
 
-  outb_p(p0x72, 0x72);
+  outb_p(cache, PORT_INDEX);
 
   return EXIT_SUCCESS;
 }
