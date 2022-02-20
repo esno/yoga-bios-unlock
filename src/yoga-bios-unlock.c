@@ -33,6 +33,8 @@ int check_dmi(const char *file, char *value, uint8_t dmi_workaround) {
     return -1;
   }
 
+  // some notebooks return trailing trash in board_version string
+  // compare on best guess seems fair enough
   if (dmi_workaround == 1) {
     if (memcmp(value, buffer, strlen(value)) == 0)
       return 0;
@@ -83,6 +85,9 @@ int is_yoga(void) {
   for (i = 0; i < board_versions_len; i += (BOARD_VERSION_LEN + 1)) {
     memset(&board_version, 0, sizeof(char) * (BOARD_VERSION_LEN + 1));
     memcpy(&board_version, &board_versions[i], sizeof(char) * BOARD_VERSION_LEN);
+    // all known boards are postfixed with two whitespaces
+    // auto appending them seems better than dealing with them in
+    // board_version.txt as long as no board proofs me wrong
     board_version[14] = ' ';
     board_version[15] = ' ';
     chk = check_dmi("board_version", board_version, 1);
@@ -122,7 +127,7 @@ int read_sysfs(const char *file, char *buffer, size_t n) {
   return 0;
 }
 
-int main(int argc, const char **argv) {
+int main(int argc, const char *argv[]) {
   char ack;
   // 0 = reserved, 1 = read, 2 = unlock, 3 = lock
   uint8_t mode = MODE_RESERVED;
