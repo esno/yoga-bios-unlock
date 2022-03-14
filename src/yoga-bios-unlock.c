@@ -10,7 +10,7 @@
 
 #include "yoga.h"
 
-#define __DMI_PATH "/sys/class/dmi/id"
+#define DMI_PATH "/sys/class/dmi/id"
 
 enum {
   MODE_RESERVED = 0,
@@ -29,7 +29,7 @@ int check_dmi(const char *file, char *value, uint8_t dmi_workaround) {
 
   memset(buffer, 0, 128);
   if (read_sysfs(file, buffer, l) < 0) {
-    fprintf(stderr, "cannot read %s/%s\n", __DMI_PATH, file);
+    fprintf(stderr, "cannot read %s/%s\n", DMI_PATH, file);
     return -1;
   }
 
@@ -104,13 +104,13 @@ int is_yoga(void) {
 }
 
 int read_sysfs(const char *file, char *buffer, size_t n) {
-  size_t l = strlen(__DMI_PATH) + strlen(file) + 2;
+  size_t l = strlen(DMI_PATH) + strlen(file) + 2;
   char filename[l];
   FILE *fd;
   size_t c;
 
   memset(filename, 0, l);
-  snprintf(filename, l, "%s/%s", __DMI_PATH, file);
+  snprintf(filename, l, "%s/%s", DMI_PATH, file);
   fd = fopen(filename, "r");
   if (fd == NULL)
     return -1;
