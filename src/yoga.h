@@ -1,5 +1,5 @@
-#ifndef __yoga_h
-#define __yoga_h 1
+#ifndef _yoga_h
+#define _yoga_h 1
 
 // these header files has to be generated with xxd
 // run `make headers`
