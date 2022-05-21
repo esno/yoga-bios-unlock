@@ -49,6 +49,7 @@ Port `0x72` is the index port that defines which value at `0x73` will be accesse
     | DMCN36WW | no XFR enhancements |
     | DMCN38WW | no XFR enhancements |
     | DMCN39WW | no XFR enhancements |
+    | DMCN41WW | no XFR enhancements |
 
 If you're aware of any further differences in BIOS version please raise a [ticket](https://github.com/esno/yoga-bios-unlock/issues/new)
 or open a pull request.
@@ -72,6 +73,7 @@ Former BIOS versions are available at lenovo servers (Readme and installation in
 * [DMCN36WW](https://download.lenovo.com/consumer/mobiles/dmcn36ww.exe) ([ReadMe](https://download.lenovo.com/consumer/mobiles/dmcn36ww.txt))
 * [DMCN38WW](https://download.lenovo.com/consumer/mobiles/dmcn38ww.exe) ([ReadMe](https://download.lenovo.com/consumer/mobiles/dmcn38ww.txt))
 * [DMCN39WW](https://download.lenovo.com/consumer/mobiles/dmcn39ww.exe) ([ReadMe](https://download.lenovo.com/consumer/mobiles/dmcn39ww.txt))
+* [DMCN41WW](https://download.lenovo.com/consumer/mobiles/dmcn41ww.exe) ([ReadMe](https://download.lenovo.com/consumer/mobiles/dmcn41ww.txt))
 
 ## Known Issues
 
