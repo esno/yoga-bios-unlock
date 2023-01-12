@@ -83,7 +83,7 @@ int is_yoga(void) {
   }
 
   for (i = 0; i < board_versions_len; i += (BOARD_VERSION_LEN + 1)) {
-    memset(&board_version, 0, sizeof(char) * (BOARD_VERSION_LEN + 1));
+    memset(&board_version, 0, sizeof(char) * (BOARD_VERSION_LEN + 3));
     memcpy(&board_version, &board_versions[i], sizeof(char) * BOARD_VERSION_LEN);
     // all known boards are postfixed with two whitespaces
     // auto appending them seems better than dealing with them in
