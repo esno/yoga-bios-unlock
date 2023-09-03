@@ -64,7 +64,7 @@ int is_yoga(void) {
     fprintf(stderr, "board name does not match\n");
     return -3;
   }
-  if (check_dmi("chassis_version", CHASSIS_VERSION, 0) < 0) {
+  if (check_dmi("chassis_version", CHASSIS_VERSION, 0) < 0 && check_dmi("chassis_version", CHASSIS_VERSION_CN, 0) < 0) {
     fprintf(stderr, "chassis version does not match\n");
     return -4;
   }
